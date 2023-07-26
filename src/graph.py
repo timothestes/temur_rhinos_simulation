@@ -15,11 +15,9 @@ turn_n_df = df[df["turn"] == 3]
 turn_n_df_true = turn_n_df[turn_n_df["on_the_play"]]
 turn_n_df_false = turn_n_df[~turn_n_df["on_the_play"]]
 
-# Calculate the min and max of the whole data for the color mapping
-vmin = df["can_play_cascade"].min()
-vmax = df["can_play_cascade"].max()
+percentage_dfs = []
 
-# For loop to create heatmap for each on_the_play DataFrame
+# For loop to create percentage_df for each on_the_play DataFrame
 for i, turn_df in enumerate([turn_n_df_true, turn_n_df_false]):
     # Calculate the percentage
     percentage_df = (
@@ -33,6 +31,14 @@ for i, turn_df in enumerate([turn_n_df_true, turn_n_df_false]):
         "percentage",
     ]
 
+    percentage_dfs.append(percentage_df)
+
+# Calculate the min and max of the whole data for the color mapping
+vmin = min(df["percentage"].min() for df in percentage_dfs)
+vmax = max(df["percentage"].max() for df in percentage_dfs)
+
+# For loop to create heatmap for each percentage_df
+for i, percentage_df in enumerate(percentage_dfs):
     # Create a pivot table
     pivot_table = percentage_df.pivot(
         index="n_lands_in_starting_deck", columns="n_cyclers_in_starting_deck", values="percentage"
