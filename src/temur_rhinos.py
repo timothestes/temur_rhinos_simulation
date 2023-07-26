@@ -212,19 +212,21 @@ class Simulation:
 
         # check to see if you have at least ONE land in play and ONE cycler in hand
         if self.play.count("Land") >= 1 and self.hand.count("Cycler") >= 1:
-            # "tap" the land and discard the cycler to search your deck for a land and put it into hand
-            self.discard.add(self.hand.remove("Cycler"))
-            land_card = self.deck.search_for("Land")
-            cycled_this_turn = True
-            if land_card is not None:
-                self.hand.add(land_card)
+            # only need to cycle if its not turn 3 and we already have 3 lands in play
+            if not (turn_number == 3 and self.play.count("Land") == 3):
+                # "tap" the land and discard the cycler to search your deck for a land and put it into hand
+                self.discard.add(self.hand.remove("Cycler"))
+                land_card = self.deck.search_for("Land")
+                cycled_this_turn = True
+                if land_card is not None:
+                    self.hand.add(land_card)
 
-            # if you haven't played a land this turn, play the land you just searched for with the cycler
-            if not land_for_turn and self.hand.count("Land") > 0:
-                self.play.add(self.hand.remove("Land"))
-                land_for_turn = True
+                # if you haven't played a land this turn, play the land you just searched for with the cycler
+                if not land_for_turn and self.hand.count("Land") > 0:
+                    self.play.add(self.hand.remove("Land"))
+                    land_for_turn = True
 
-        # if we are over 7 cards in hand, discard a non-land card:
+        # at the end of the turn, if we are over 7 cards in hand, discard a non-land card:
         if len(self.hand.cards) > 7:
             if self.hand.count("Non-Land") > 0:
                 self.discard.add(self.hand.remove("Non-Land"))
