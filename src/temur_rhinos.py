@@ -13,7 +13,7 @@ N_CYCLERS_TO_TRY = [0, 1, 2, 3, 4]
 N_LANDS_TO_TRY = [26, 25, 24, 23, 22, 21, 20, 19, 18]
 N_GAMES = 10000
 N_TURNS = 3
-ON_THE_PLAY = True
+ON_THE_PLAY = [True, False]
 
 
 class Card:
@@ -248,6 +248,7 @@ class Simulation:
             "n_cyclers_in_starting_deck": self.n_cyclers,
             # can only play cascade this turn if we have 3 lands in play and we didn't cycle this turn.
             "can_play_cascade": self.play.count("Land") >= 3 and not cycled_this_turn,
+            "on_the_play": self.on_the_play,
         }
 
     @staticmethod
@@ -265,6 +266,7 @@ class Simulation:
             "n_lands_in_starting_deck",
             "n_cyclers_in_starting_deck",
             "can_play_cascade",
+            "on_the_play",
         ]
         with open("game_log.csv", "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=headers)
@@ -323,16 +325,20 @@ class Simulation:
 
 if __name__ == "__main__":
     Simulation.create_empty_log_file()
-    for n_lands in N_LANDS_TO_TRY:
-        for n_cyclers in N_CYCLERS_TO_TRY:
-            simulation = Simulation(
-                n_lands=n_lands,
-                n_cyclers=n_cyclers,
-                n_games=N_GAMES,
-                n_turns=N_TURNS,
-                on_the_play=ON_THE_PLAY,
-            )
-            simulation.simulate_game()
-            print(
-                f"Finished a simulation for n_lands: {n_lands}, n_cyclers: {n_cyclers}, n_games: {N_GAMES}"
-            )
+    for on_the_play in ON_THE_PLAY:
+        for n_lands in N_LANDS_TO_TRY:
+            for n_cyclers in N_CYCLERS_TO_TRY:
+                simulation = Simulation(
+                    n_lands=n_lands,
+                    n_cyclers=n_cyclers,
+                    n_games=N_GAMES,
+                    n_turns=N_TURNS,
+                    on_the_play=on_the_play,
+                )
+                simulation.simulate_game()
+                print(
+                    (
+                        f"Finished a simulation for n_lands: {n_lands}, n_cyclers: {n_cyclers}, "
+                        f"n_games: {N_GAMES}, on_the_play: {on_the_play}"
+                    )
+                )
