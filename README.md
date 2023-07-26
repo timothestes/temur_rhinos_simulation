@@ -41,6 +41,16 @@ N_TURNS = 3
 
 You can adjust these parameters according to your needs to explore different scenarios.
 
+## Limitations/Disclaimers
+- I have not factored in the impact of including Ketria Triome (a tapland) in the number of lands. Plan to do this later.
+
+- I have not factored in the impact of using Fire//Ice to draw an extra card on turn two to help hit land drops. Plan to do this later.
+
+- I have not considered the impact of Gemstone caverns Luck shenanigans in any of these scenarios.
+
+- Currently designed to only provide accurate stats until turn 3. (see notes for `can_play_cascade` in `src/temur_rhinos.py`)
+
+
 ## How it Works
 
 1. The `temur_rhinos.py` script simulates a game by creating a deck based on the specified number of cyclers and lands.

@@ -246,7 +246,9 @@ class Simulation:
             "n_lands_in_hand": self.hand.count("Land"),
             "n_lands_in_starting_deck": self.n_lands,
             "n_cyclers_in_starting_deck": self.n_cyclers,
-            # can only play cascade this turn if we have 3 lands in play and we didn't cycle this turn.
+            # assumption: can only play cascade this turn if we have 3 lands in play and we didn't cycle this turn.
+            # Will skew simulations where people try to go more than 4 turns...
+            # TODO: have better can_play_cascade logic.
             "can_play_cascade": self.play.count("Land") >= 3 and not cycled_this_turn,
             "on_the_play": self.on_the_play,
         }
