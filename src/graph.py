@@ -50,6 +50,6 @@ plt.xlabel("Number of cyclers in starting deck")
 plt.ylabel("Number of lands in starting deck")
 
 # Save the figure to a file
-plt.savefig("assets/heatmap_on_the_draw.png")
+plt.savefig("assets/heatmap.png")
 
 plt.show()

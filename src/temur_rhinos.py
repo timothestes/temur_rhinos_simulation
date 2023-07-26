@@ -13,7 +13,7 @@ N_CYCLERS_TO_TRY = [0, 1, 2, 3, 4]
 N_LANDS_TO_TRY = [26, 25, 24, 23, 22, 21, 20, 19, 18]
 N_GAMES = 10000
 N_TURNS = 3
-ON_THE_PLAY = False
+ON_THE_PLAY = True
 
 
 class Card:
