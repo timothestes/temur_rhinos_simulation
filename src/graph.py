@@ -14,7 +14,7 @@ turn_n_df = df[df["turn"] == 3]
 # Calculate the percentage of simulations with each combination of number of lands and cyclers that had 3 lands in play
 percentage_df = (
     turn_n_df.groupby(["n_lands_in_starting_deck", "n_cyclers_in_starting_deck"])
-    .apply(lambda group: (group["n_lands_in_play"] == 3).mean())
+    .apply(lambda group: group["can_play_cascade"].mean())
     .reset_index()
 )
 percentage_df.columns = ["n_lands_in_starting_deck", "n_cyclers_in_starting_deck", "percentage"]
@@ -36,7 +36,7 @@ sns.heatmap(
     annot=annot_array,  # pass in formatted annotation array here
     fmt="",  # prevent seaborn from applying additional formatting
 )
-plt.title("Percentage of simulations with 3 lands in play by turn 3", fontsize=16, pad=30)
+plt.title("Percentage of simulations that have 3 untapped lands by turn 3", fontsize=16, pad=30)
 plt.text(
     0.5,
     1.02,
@@ -50,6 +50,6 @@ plt.xlabel("Number of cyclers in starting deck")
 plt.ylabel("Number of lands in starting deck")
 
 # Save the figure to a file
-plt.savefig("assets/heatmap.png")
+plt.savefig("assets/heatmap_on_the_draw.png")
 
 plt.show()

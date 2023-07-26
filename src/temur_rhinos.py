@@ -13,7 +13,7 @@ N_CYCLERS_TO_TRY = [0, 1, 2, 3, 4]
 N_LANDS_TO_TRY = [26, 25, 24, 23, 22, 21, 20, 19, 18]
 N_GAMES = 10000
 N_TURNS = 3
-ON_THE_PLAY = True
+ON_THE_PLAY = False
 
 
 class Card:
@@ -199,6 +199,7 @@ class Simulation:
     ) -> dict:
         """Take a turn of mtg."""
         land_for_turn = False
+        cycled_this_turn = False
         # draw a card for turn (except if on the play)
         if not (self.on_the_play and turn_number == 1):
             drawn_card = self.deck.draw()
@@ -214,6 +215,7 @@ class Simulation:
             # "tap" the land and discard the cycler to search your deck for a land and put it into hand
             self.discard.add(self.hand.remove("Cycler"))
             land_card = self.deck.search_for("Land")
+            cycled_this_turn = True
             if land_card is not None:
                 self.hand.add(land_card)
 
@@ -242,6 +244,8 @@ class Simulation:
             "n_lands_in_hand": self.hand.count("Land"),
             "n_lands_in_starting_deck": self.n_lands,
             "n_cyclers_in_starting_deck": self.n_cyclers,
+            # can only play cascade this turn if we have 3 lands in play and we didn't cycle this turn.
+            "can_play_cascade": self.play.count("Land") >= 3 and not cycled_this_turn,
         }
 
     @staticmethod
@@ -258,7 +262,7 @@ class Simulation:
             "n_lands_in_hand",
             "n_lands_in_starting_deck",
             "n_cyclers_in_starting_deck",
-            "on_the_play",
+            "can_play_cascade",
         ]
         with open("game_log.csv", "w", newline="") as f:
             writer = csv.DictWriter(f, fieldnames=headers)
