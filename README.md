@@ -37,9 +37,6 @@ N_GAMES = 10000
 
 # Number of turns to simulate (e.g., turn 3)
 N_TURNS = 3
-
-# Play or draw (True for on the play, False for on the draw)
-ON_THE_PLAY = True
 ```
 
 You can adjust these parameters according to your needs to explore different scenarios.
